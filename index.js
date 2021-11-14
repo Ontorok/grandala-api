@@ -25,6 +25,10 @@ mongoose
     console.log(err.message);
   });
 
+app.get('/api/test', (req, res) => {
+  res.send('Test is Successfull!!');
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on PORT: ${process.env.PORT}`);
 });
