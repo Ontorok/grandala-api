@@ -6,12 +6,15 @@
      Modified: 14-November-2021
 */
 
-/* **************************************************************
- *                    External Imports
- ************************************************************** */
+/* -------------------- External Imports (start) -------------------- */
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+/* -------------------- External Imports (end) -------------------- */
+
+/* -------------------- Internal Imports (start) -------------------- */
+const { userRouter } = require('./routes');
+/* -------------------- Internal Imports (end) -------------------- */
 
 dotenv.config();
 const app = express();
@@ -24,10 +27,8 @@ mongoose
   .catch((err) => {
     console.log(err.message);
   });
-
-app.get('/api/test', (req, res) => {
-  res.send('Test is Successfull!!');
-});
+app.use(express.json());
+app.use('/api/user', userRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on PORT: ${process.env.PORT}`);
