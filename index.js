@@ -18,7 +18,8 @@ const {
   userRouter,
   productRouter,
   cartRouter,
-  orderRouter
+  orderRouter,
+  authRouter
 } = require('./routes');
 /* -------------------- Internal Imports (end) -------------------- */
 
@@ -36,10 +37,12 @@ mongoose
   });
 
 app.use(express.json());
+
 app.use('/api/user', userRouter);
 app.use('/api/product', productRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/order', orderRouter);
+app.use('/api/auth', authRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on PORT: ${process.env.PORT}`);
