@@ -1,9 +1,9 @@
 /*
-     Title: User Models
-     Description: User Model
-     Author: Nasir Ahmed
-     Date: 14-November-2021
-     Modified: 14-November-2021
+    Title: User Models
+    Description: User Model
+    Author: Nasir Ahmed
+    Date: 14-November-2021
+    Modified: 14-November-2021
 */
 
 /* -------------------- External Imports (start) -------------------- */

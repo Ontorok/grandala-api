@@ -14,7 +14,12 @@ const dotenv = require('dotenv');
 /* -------------------- External Imports (end) -------------------- */
 
 /* -------------------- Internal Imports (start) -------------------- */
-const { userRouter } = require('./routes');
+const {
+  userRouter,
+  productRouter,
+  cartRouter,
+  orderRouter
+} = require('./routes');
 /* -------------------- Internal Imports (end) -------------------- */
 
 dotenv.config();
@@ -32,6 +37,9 @@ mongoose
 
 app.use(express.json());
 app.use('/api/user', userRouter);
+app.use('/api/product', productRouter);
+app.use('/api/cart', cartRouter);
+app.use('/api/order', orderRouter);
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on PORT: ${process.env.PORT}`);

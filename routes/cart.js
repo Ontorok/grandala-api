@@ -1,9 +1,9 @@
 /*
-     Title: User Router
-     Description: End pointes for User Router
+     Title: Cart Router
+     Description: End pointes for Cart Router
      Author: Nasir Ahmed
-     Date: 14-November-2021
-     Modified: 14-November-2021 
+     Date: 15-November-2021
+     Modified: 15-November-2021 
 */
 
 /* -------------------- External Imports (start) -------------------- */
@@ -11,7 +11,7 @@ const router = require('express').Router();
 /* -------------------- External Imports (end) -------------------- */
 
 router.get('/', (req, res) => {
-  res.send('User routes separated');
+  res.send('Cart routes separated');
 });
 
 router.post('/', (req, res) => {
