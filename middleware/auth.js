@@ -32,7 +32,7 @@ const verifyToken = (req, res, next) => {
 /*
  ** Verify access token and check parametric id and user id is same or logged in user is an Admin
  */
-const varifyTokenAndAuthorization = (req, res, next) => {
+const verifyTokenAndAuthorization = (req, res, next) => {
   verifyToken(req, res, () => {
     if (req.user.id === req.params.id || req.user.isAdmin) {
       next();
@@ -47,7 +47,7 @@ const varifyTokenAndAuthorization = (req, res, next) => {
 /*
  ** Verify access token and check logged in user is an Admin
  */
-const varifyTokenAndAdmin = (req, res, next) => {
+const verifyTokenAndAdmin = (req, res, next) => {
   verifyToken(req, res, () => {
     if (req.user.isAdmin) {
       next();
@@ -61,6 +61,6 @@ const varifyTokenAndAdmin = (req, res, next) => {
 
 module.exports = {
   verifyToken,
-  varifyTokenAndAuthorization,
-  varifyTokenAndAdmin
+  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin
 };
