@@ -8,6 +8,7 @@
 
 /* -------------------- External Imports (start) -------------------- */
 const router = require('express').Router();
+const jwt = require('jsonwebtoken');
 /* -------------------- External Imports (end) -------------------- */
 
 /* -------------------- Internal Imports (start) -------------------- */
@@ -15,6 +16,7 @@ const People = require('../models/People');
 const { doDecrypt, doEncrypt } = require('../utility/helperMethods');
 /* -------------------- Internal Imports (end) -------------------- */
 
+// @TODO: Try to use Bycrypt to entryp password
 // User Registration
 router.post('/', async (req, res) => {
   const { username, email, password, isAdmin } = req.body;
@@ -48,9 +50,17 @@ router.post('/login', async (req, res) => {
     if (user) {
       const decryptedPassword = doDecrypt(user.password);
       if (decryptedPassword === password) {
+        const accessToken = jwt.sign(
+          {
+            id: user.username,
+            isAdmin: user.isAdmin
+          },
+          process.env.JWT_SECRET,
+          { expiresIn: 1800 }
+        );
         res.status(200).json({
           message: 'Login Successfull',
-          data: user
+          data: accessToken
         });
       } else {
         res.status(401).json({
