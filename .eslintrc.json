@@ -12,7 +12,8 @@
     "indent": "off",
     "linebreak-style": "off",
     "prettier/prettier": "error",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "consistent-return": "off"
   },
   "plugins": ["prettier"]
 }
