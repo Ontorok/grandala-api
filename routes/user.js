@@ -10,8 +10,12 @@
 const router = require('express').Router();
 /* -------------------- External Imports (end) -------------------- */
 
-router.get('/', (req, res) => {
-  res.send('User routes separated');
+/* -------------------- Internal Imports (start) -------------------- */
+const tokenVerify = require('../middleware/tokenVerify');
+/* -------------------- Internal Imports (end) -------------------- */
+
+router.get('/', tokenVerify, (req, res) => {
+  res.send('User route separated');
 });
 
 router.post('/', (req, res) => {

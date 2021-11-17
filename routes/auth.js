@@ -56,8 +56,9 @@ router.post('/login', async (req, res) => {
             isAdmin: user.isAdmin
           },
           process.env.JWT_SECRET,
-          { expiresIn: 1800 }
+          { expiresIn: 20 }
         );
+        res.setHeader('token', `Bearer ${accessToken}`);
         res.status(200).json({
           message: 'Login Successfull',
           data: accessToken

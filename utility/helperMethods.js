@@ -25,7 +25,15 @@ const doDecrypt = (encryptPass) => {
   return decrypted;
 };
 
+const serverResponse = (message, data) => {
+  return {
+    message,
+    data
+  };
+};
+
 module.exports = {
   doEncrypt,
-  doDecrypt
+  doDecrypt,
+  serverResponse
 };
