@@ -52,7 +52,7 @@ router.post('/login', async (req, res) => {
       if (decryptedPassword === password) {
         const accessToken = jwt.sign(
           {
-            id: user.username,
+            id: user._id,
             isAdmin: user.isAdmin
           },
           process.env.JWT_SECRET,
