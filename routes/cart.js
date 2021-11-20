@@ -10,6 +10,7 @@
 const router = require('express').Router();
 /* -------------------- External Imports (end) -------------------- */
 
+// User cart 
 router.get('/', (req, res) => {
   res.send('Cart routes separated');
 });
