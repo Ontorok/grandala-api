@@ -11,11 +11,7 @@ const router = require('express').Router();
 /* -------------------- External Imports (end) -------------------- */
 
 /* -------------------- Internal Imports (start) -------------------- */
-const {
-  verifyTokenAndAdmin,
-  verifyToken,
-  verifyTokenAndAuthorization
-} = require('../middleware/auth');
+const { verifyTokenAndAdmin, verifyToken } = require('../middleware/auth');
 const { serverResponse } = require('../utility/helperMethods');
 const Order = require('../models/Order');
 /* -------------------- Internal Imports (end) -------------------- */
