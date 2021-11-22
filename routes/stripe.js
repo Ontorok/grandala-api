@@ -39,7 +39,6 @@ const Stripe = require('stripe');
 const stripe = Stripe(process.env.STRIPE_KEY);
 
 router.post('/payment', (req, res) => {
-  console.log(req.body);
   stripe.charges.create(
     {
       source: req.body.tokenId,

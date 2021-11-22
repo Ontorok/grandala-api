@@ -1,7 +1,7 @@
 {
   "workbench.colorTheme": "Learn with Sumit - Blue Velvet",
-  "editor.fontSize": 18,
-  "editor.fontFamily": "Fira Code,Operator Mono",
+  "editor.fontSize": 16,
+  "editor.fontFamily": "Operator Mono",
   "editor.fontLigatures": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
