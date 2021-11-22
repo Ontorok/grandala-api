@@ -1,6 +1,6 @@
 {
-  "workbench.colorTheme": "Learn with Sumit - Vintage",
-  "editor.fontSize": 14,
+  "workbench.colorTheme": "Learn with Sumit - Blue Velvet",
+  "editor.fontSize": 18,
   "editor.fontFamily": "Fira Code,Operator Mono",
   "editor.fontLigatures": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -14,7 +14,7 @@
     "editor.formatOnSave": false,
     "editor.defaultFormatter": null
   },
-  "javascript.validate.enable": false, //disable all built-in syntax checking
+  "javascript.validate.enable": false, // disable all built-in syntax checking
   "javascript.format.semicolons": "insert",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
@@ -22,7 +22,7 @@
     "source.organizeImports": true
   },
   "eslint.alwaysShowStatus": true,
-  // // emmet
+  // emmet
   "emmet.triggerExpansionOnTab": true,
   "emmet.includeLanguages": {
     "javascript": "javascriptreact"
