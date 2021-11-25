@@ -12,6 +12,10 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
+const https = require('https');
+const path = require('path');
+const fs = require('fs');
+
 /* -------------------- External Imports (end) -------------------- */
 
 /* -------------------- Internal Imports (start) -------------------- */
@@ -48,6 +52,17 @@ app.use('/api/cart', cartRouter);
 app.use('/api/order', orderRouter);
 app.use('/api/checkout', checkoutRouter);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on PORT: ${process.env.PORT}`);
-});
+const sslserver = https.createServer(
+  {
+    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
+  },
+  app
+);
+
+sslserver.listen(process.env.PORT, () =>
+  console.log(`Server is running on PORT: ${process.env.PORT}`)
+);
+// app.listen(process.env.PORT, () => {
+//   console.log(`Server is running on PORT: ${process.env.PORT}`);
+// });
