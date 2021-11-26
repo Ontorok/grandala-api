@@ -3,18 +3,14 @@
      Description: This file will run first when the application is loaded
      Author: Nasir Ahmed
      Date: 14-November-2021 
-     Modified: 14-November-2021
+     Modified: 26-November-2021
 */
 
 /* -------------------- External Imports (start) -------------------- */
+require('dotenv');
 const express = require('express');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const cors = require('cors');
-
-const https = require('https');
-const path = require('path');
-const fs = require('fs');
 
 /* -------------------- External Imports (end) -------------------- */
 
@@ -29,7 +25,6 @@ const {
 } = require('./routes');
 /* -------------------- Internal Imports (end) -------------------- */
 
-dotenv.config();
 const app = express();
 
 mongoose
@@ -52,17 +47,11 @@ app.use('/api/cart', cartRouter);
 app.use('/api/order', orderRouter);
 app.use('/api/checkout', checkoutRouter);
 
-const sslserver = https.createServer(
-  {
-    key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem'))
-  },
-  app
-);
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on PORT: ${process.env.PORT}`);
+});
 
-sslserver.listen(process.env.PORT, () =>
-  console.log(`Server is running on PORT: ${process.env.PORT}`)
-);
-// app.listen(process.env.PORT, () => {
-//   console.log(`Server is running on PORT: ${process.env.PORT}`);
-// });
+/** Change Log
+ * 25-Nov-2021 : create https server
+ * 26-Nov-2021 : back to http server
+ * */

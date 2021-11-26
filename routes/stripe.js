@@ -1,17 +1,17 @@
-// /*
-//      Title: Payment Router
-//      Description: End pointes for Payment
-//      Author: Nasir Ahmed
-//      Date: 20-November-2021
-//      Modified: 20-November-2021
-// */
+/*
+      Title: Payment Router
+      Description: End pointes for Payment
+      Author: Nasir Ahmed
+      Date: 20-November-2021
+      Modified: 26-November-2021
+ */
 
-// /* -------------------- External Imports (start) -------------------- */
-const KEY =
-  'sk_test_51JxyNiGkuPwZHBmsHjlCVCKwSF12K7NzIgkAfEL6z1oJah4TMCnIsKrunXVSdL6XafmwPuewTy2g8jeWzJaFXAvz004iM71qsJ';
+/* -------------------- External Imports (start) -------------------- */
+require('dotenv').config();
+
 const router = require('express').Router();
-const stripe = require('stripe')(KEY);
-// /* -------------------- External Imports (end) -------------------- */
+const stripe = require('stripe')(process.env.STRIPE_KEY);
+/* -------------------- External Imports (end) -------------------- */
 
 router.post('/payment', async (req, res) => {
   stripe.charges.create(
@@ -31,3 +31,7 @@ router.post('/payment', async (req, res) => {
 });
 
 module.exports = router;
+
+/** Change Log
+ * 26-Nov-2021 : import dotenv because of not reaching ,env file
+ * */
