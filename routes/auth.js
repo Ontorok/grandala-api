@@ -3,7 +3,7 @@
      Description: End pointes for Auth Router
      Author: Nasir Ahmed
      Date: 15-November-2021
-     Modified: 15-November-2021 
+     Modified: 27-November-2021 
 */
 
 /* -------------------- External Imports (start) -------------------- */
@@ -45,11 +45,19 @@ router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    const user = await People.findOne({ username });
+    const user = await People.findOne({ username }).select({
+      _id: 0,
+      __v: 0,
+      createdAt: 0,
+      updatedAt: 0
+    });
 
     if (user) {
       const decryptedPassword = doDecrypt(user.password);
+
       if (decryptedPassword === password) {
+        const loggedInUser = { ...user._doc };
+        delete loggedInUser.password;
         const accessToken = jwt.sign(
           {
             id: user._id,
@@ -60,7 +68,7 @@ router.post('/login', async (req, res) => {
         );
         res.status(200).json({
           message: 'Login Successfull',
-          data: accessToken
+          data: { ...loggedInUser, accessToken }
         });
       } else {
         res.status(401).json({
@@ -84,3 +92,7 @@ router.post('/login', async (req, res) => {
 });
 
 module.exports = router;
+
+/** Change Log
+ * 27-Nov-2021 : password field removed from User model
+ * */
