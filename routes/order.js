@@ -1,110 +1,106 @@
-/*
-     Title: Cart Router
-     Description: End pointes for Cart Router
-     Author: Nasir Ahmed
-     Date: 20-November-2021
-     Modified: 20-November-2021
-*/
+const Order = require("../models/Order");
+const {
+  verifyToken,
+  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
+} = require("./verifyToken");
 
-/* -------------------- External Imports (start) -------------------- */
-const router = require('express').Router();
-/* -------------------- External Imports (end) -------------------- */
+const router = require("express").Router();
 
-/* -------------------- Internal Imports (start) -------------------- */
-const { verifyTokenAndAdmin, verifyToken } = require('../middleware/auth');
-const { serverResponse } = require('../utility/helperMethods');
-const Order = require('../models/Order');
-/* -------------------- Internal Imports (end) -------------------- */
+//CREATE
 
-// Create Order
-router.post('/', verifyToken, async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
   const newOrder = new Order(req.body);
+
   try {
     const savedOrder = await newOrder.save();
-    res
-      .status(200)
-      .json(serverResponse('Order placed successfully', savedOrder));
+    res.status(200).json(savedOrder);
   } catch (err) {
-    res.status(500).json(serverResponse(err.message, null));
+    res.status(500).json(err);
   }
 });
 
-// Update Order
-router.put('/:id', verifyTokenAndAdmin, async (req, res) => {
+//UPDATE
+router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
     const updatedOrder = await Order.findByIdAndUpdate(
       req.params.id,
       {
-        $set: req.body
+        $set: req.body,
       },
       { new: true }
     );
-    res
-      .status(200)
-      .json(serverResponse('Order Updated Successfully', updatedOrder));
+    res.status(200).json(updatedOrder);
   } catch (err) {
-    res.status(500).json(serverResponse(err.message, null));
+    res.status(500).json(err);
   }
 });
 
-// Delete Cart
-router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
+//DELETE
+router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
     await Order.findByIdAndDelete(req.params.id);
-    res.status(200).json(serverResponse('Order has been deleted', null));
+    res.status(200).json("Order has been deleted...");
   } catch (err) {
-    res.status(500).json(serverResponse(err.message, null));
+    res.status(500).json(err);
   }
 });
 
-// Get User Order
-/**
- * Returns user cart.
- * @param {userId} is the user id whose cart to be rendered.
- */
-router.get('/find/:userId', verifyTokenAndAdmin, async (req, res) => {
+//GET USER ORDERS
+router.get("/find/:userId", verifyTokenAndAuthorization, async (req, res) => {
   try {
-    const userOrders = await Order.find({ userId: req.params.userId });
-    res.status(200).json(serverResponse('User Orders fetched', userOrders));
+    const orders = await Order.find({ userId: req.params.userId });
+    res.status(200).json(orders);
   } catch (err) {
-    res.status(500).json(serverResponse(err.message, null));
+    res.status(500).json(err);
   }
 });
 
-// Get All
-router.get('/', verifyTokenAndAdmin, async (req, res) => {
+// //GET ALL
+
+router.get("/", verifyTokenAndAdmin, async (req, res) => {
   try {
     const orders = await Order.find();
-    res.status(200).json(serverResponse('Order fetched', orders));
+    res.status(200).json(orders);
   } catch (err) {
-    res.status(500).json(serverResponse(err.message, null));
+    res.status(500).json(err);
   }
 });
 
-// Get monthly income
-router.get('/income', verifyTokenAndAdmin, async (req, res) => {
+// GET MONTHLY INCOME
+
+router.get("/income", verifyTokenAndAdmin, async (req, res) => {
+  const productId = req.query.pid;
   const date = new Date();
   const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
   const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1));
+
   try {
     const income = await Order.aggregate([
-      { $match: { createdAt: { $gte: previousMonth } } },
+      {
+        $match: {
+          createdAt: { $gte: previousMonth },
+          ...(productId && {
+            products: { $elemMatch: { productId } },
+          }),
+        },
+      },
       {
         $project: {
-          month: { $month: '$createdAt' },
-          sales: '$amount'
-        }
+          month: { $month: "$createdAt" },
+          sales: "$amount",
+        },
       },
       {
         $group: {
-          _id: '$month',
-          total: { $sum: '$sales' }
-        }
-      }
+          _id: "$month",
+          total: { $sum: "$sales" },
+        },
+      },
     ]);
-    res.status(200).json(serverResponse('Income STAT', income));
+    res.status(200).json(income);
   } catch (err) {
-    res.status(500).json(serverResponse(err.message, null));
+    res.status(500).json(err);
   }
 });
 

@@ -1,57 +1,33 @@
-/*
-     Title: Initial File
-     Description: This file will run first when the application is loaded
-     Author: Nasir Ahmed
-     Date: 14-November-2021 
-     Modified: 26-November-2021
-*/
-
-/* -------------------- External Imports (start) -------------------- */
-require('dotenv');
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-
-/* -------------------- External Imports (end) -------------------- */
-
-/* -------------------- Internal Imports (start) -------------------- */
-const {
-  userRouter,
-  productRouter,
-  cartRouter,
-  orderRouter,
-  authRouter,
-  checkoutRouter
-} = require('./routes');
-/* -------------------- Internal Imports (end) -------------------- */
-
+const express = require("express");
 const app = express();
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+dotenv.config();
+const userRoute = require("./routes/user");
+const authRoute = require("./routes/auth");
+const productRoute = require("./routes/product");
+const cartRoute = require("./routes/cart");
+const orderRoute = require("./routes/order");
+const stripeRoute = require("./routes/stripe");
+const cors = require("cors");
+
 
 mongoose
   .connect(process.env.MONGO_URL)
-  .then(() => {
-    console.log('DB Connection established!!');
-  })
-
+  .then(() => console.log("DB Connection Successfull!"))
   .catch((err) => {
-    console.log(err.message);
+    console.log(err);
   });
 
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
+app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
+app.use("/api/products", productRoute);
+app.use("/api/carts", cartRoute);
+app.use("/api/orders", orderRoute);
+app.use("/api/checkout", stripeRoute);
 
-app.use('/api/auth', authRouter);
-app.use('/api/product', productRouter);
-app.use('/api/user', userRouter);
-app.use('/api/cart', cartRouter);
-app.use('/api/order', orderRouter);
-app.use('/api/checkout', checkoutRouter);
-
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on PORT: ${process.env.PORT}`);
+app.listen(process.env.PORT || 5000, () => {
+  console.log("Backend server is running!");
 });
-
-/** Change Log
- * 25-Nov-2021 : create https server
- * 26-Nov-2021 : back to http server
- * */

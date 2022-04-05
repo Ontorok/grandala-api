@@ -1,24 +1,14 @@
-/*
-      Title: Payment Router
-      Description: End pointes for Payment
-      Author: Nasir Ahmed
-      Date: 20-November-2021
-      Modified: 26-November-2021
- */
+const router = require("express").Router();
+// const stripe = require("stripe")(process.env.STRIPE_KEY);
+const KEY = process.env.STRIPE_KEY
+const stripe = require("stripe")(KEY);
 
-/* -------------------- External Imports (start) -------------------- */
-require('dotenv').config();
-
-const router = require('express').Router();
-const stripe = require('stripe')(process.env.STRIPE_KEY);
-/* -------------------- External Imports (end) -------------------- */
-
-router.post('/payment', async (req, res) => {
+router.post("/payment", (req, res) => {
   stripe.charges.create(
     {
       source: req.body.tokenId,
       amount: req.body.amount,
-      currency: 'usd'
+      currency: "usd",
     },
     (stripeErr, stripeRes) => {
       if (stripeErr) {
@@ -31,7 +21,3 @@ router.post('/payment', async (req, res) => {
 });
 
 module.exports = router;
-
-/** Change Log
- * 26-Nov-2021 : import dotenv because of not reaching ,env file
- * */

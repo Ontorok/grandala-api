@@ -1,92 +1,83 @@
-/*
-     Title: Product Router
-     Description: End pointes for Product Router
-     Author: Nasir Ahmed
-     Date: 15-November-2021
-     Modified: 17-November-2021 
-*/
+const Product = require("../models/Product");
+const {
+  verifyToken,
+  verifyTokenAndAuthorization,
+  verifyTokenAndAdmin,
+} = require("./verifyToken");
 
-/* -------------------- External Imports (start) -------------------- */
-const router = require('express').Router();
-/* -------------------- External Imports (end) -------------------- */
+const router = require("express").Router();
 
-/* -------------------- Internal Imports (start) -------------------- */
-const { verifyTokenAndAdmin } = require('../middleware/auth');
-const { serverResponse } = require('../utility/helperMethods');
-const Product = require('../models/Product');
-/* -------------------- Internal Imports (end) -------------------- */
+//CREATE
 
-// Create Product
-router.post('/', verifyTokenAndAdmin, async (req, res) => {
+router.post("/", verifyTokenAndAdmin, async (req, res) => {
   const newProduct = new Product(req.body);
+
   try {
     const savedProduct = await newProduct.save();
-    res
-      .status(200)
-      .json(serverResponse('Product created successfully', savedProduct));
+    res.status(200).json(savedProduct);
   } catch (err) {
-    res.status(500).json(serverResponse(err.message, null));
+    res.status(500).json(err);
   }
 });
 
-// Update User
-router.put('/:id', verifyTokenAndAdmin, async (req, res) => {
+//UPDATE
+router.put("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
       {
-        $set: req.body
+        $set: req.body,
       },
       { new: true }
     );
-    res
-      .status(200)
-      .json(serverResponse('Product Updated Successfully', updatedProduct));
+    res.status(200).json(updatedProduct);
   } catch (err) {
-    res.status(500).json(serverResponse(err.message, null));
+    res.status(500).json(err);
   }
 });
 
-// Delete Product
-router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
+//DELETE
+router.delete("/:id", verifyTokenAndAdmin, async (req, res) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
-    res.status(200).json(serverResponse('Product has been deleted', null));
+    res.status(200).json("Product has been deleted...");
   } catch (err) {
-    res.status(500).json(serverResponse(err.message, null));
+    res.status(500).json(err);
   }
 });
 
-// Get Product
-router.get('/find/:id', async (req, res) => {
+//GET PRODUCT
+router.get("/find/:id", async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
-    res.status(200).json(serverResponse('Product Fetched', product));
+    res.status(200).json(product);
   } catch (err) {
-    res.status(500).json(serverResponse(err.message, null));
+    res.status(500).json(err);
   }
 });
 
-// Get Products
-router.get('/', async (req, res) => {
-  const { latest, category } = req.query;
+//GET ALL PRODUCTS
+router.get("/", async (req, res) => {
+  const qNew = req.query.new;
+  const qCategory = req.query.category;
   try {
     let products;
-    if (latest) {
-      products = await Product.find().sort({ createdAt: -1 }).limit(5);
-    } else if (category) {
+
+    if (qNew) {
+      products = await Product.find().sort({ createdAt: -1 }).limit(1);
+    } else if (qCategory) {
       products = await Product.find({
         categories: {
-          $in: [category]
-        }
+          $in: [qCategory],
+        },
       });
     } else {
       products = await Product.find();
     }
 
-    res.status(200).json(serverResponse('Users fetched', products));
+    res.status(200).json(products);
   } catch (err) {
-    res.status(500).json(serverResponse(err.message, null));
+    res.status(500).json(err);
   }
 });
 

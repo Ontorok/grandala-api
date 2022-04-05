@@ -1,32 +1,21 @@
-/*
-    Title: Cart Models
-    Description: Cart Model
-    Author: Nasir Ahmed
-    Date: 14-November-2021
-    Modified: 14-November-2021
-*/
+const mongoose = require("mongoose");
 
-/* -------------------- External Imports (start) -------------------- */
-const mongoose = require('mongoose');
-/* -------------------- External Imports (end) ---------------------- */
-
-// Create Cart Schema
-const cartSchema = new mongoose.Schema(
+const CartSchema = new mongoose.Schema(
   {
-    userId: {
-      type: String,
-      required: true
-    },
+    userId: { type: String, required: true },
     products: [
       {
-        productId: { type: String },
-        quantity: { type: Number, default: 1 }
-      }
-    ]
+        productId: {
+          type: String,
+        },
+        quantity: {
+          type: Number,
+          default: 1,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
 
-const Cart = mongoose.model('Cart', cartSchema);
-
-module.exports = Cart;
+module.exports = mongoose.model("Cart", CartSchema);
